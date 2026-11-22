@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stock Protocol – Mystic Summit Hackathon</title>
+  <style>
+    :root {
+      --bg: #f5f3ee;
+      --surface: #ffffff;
+      --text: #1d2433;
+      --muted: #5b6475;
+      --accent: #2b4acb;
+      --accent-text: #ffffff;
+      --border: #d9d6cc;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #12151d;
+        --surface: #1b2030;
+        --text: #eef0f6;
+        --muted: #a2a9ba;
+        --accent: #7b93ff;
+        --accent-text: #10142a;
+        --border: #2d3447;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      line-height: 1.6;
+    }
+    main {
+      width: 100%;
+      max-width: 600px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 44px 32px;
+      text-align: center;
+    }
+    .brand { margin-bottom: 26px; }
+    h1 {
+      margin: 0;
+      font-size: 2.1rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--accent);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .intro { margin: 0 0 26px; color: var(--muted); }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .btn {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font: inherit;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      background: var(--accent);
+      color: var(--accent-text);
+      border: 1px solid var(--accent);
+    }
+    .btn.secondary {
+      background: transparent;
+      color: var(--accent);
+    }
+    .btn:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+
+    dialog#viewer {
+      width: min(1100px, 96vw);
+      height: min(780px, 92vh);
+      max-width: none;
+      max-height: none;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text);
+      overflow: hidden;
+    }
+    dialog#viewer::backdrop { background: rgba(10, 14, 24, 0.75); }
+    dialog#viewer[open] { display: flex; flex-direction: column; }
+    .viewer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .viewer-bar strong { font-size: 1rem; }
+    .viewer-bar .close {
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font: inherit;
+      cursor: pointer;
+    }
+    .viewer-bar .close:hover { border-color: var(--accent); color: var(--accent); }
+    #pptFrame { display: block; flex: 1 1 auto; width: 100%; min-height: 0; border: 0; }
+    .viewer-note {
+      margin: 0;
+      padding: 8px 18px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    .viewer-note a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand">
+      <h1>Stock Protocol</h1>
+      <p class="subtitle">Mystic Summit Hackathon</p>
+    </div>
+    <p class="intro">Explore our idea deck below.</p>
+    <div class="actions">
+      <button class="btn" id="viewBtn" type="button">View My Presentation</button>
+      <a class="btn secondary" href="Idea_Deck_Template.ppt" download>Download PPT</a>
+    </div>
+  </main>
+
+  <dialog id="viewer" aria-labelledby="viewerTitle">
+    <div class="viewer-bar">
+      <strong id="viewerTitle">Stock Protocol – Idea Deck</strong>
+      <button class="close" id="closeBtn" type="button" aria-label="Close presentation">Close</button>
+    </div>
+    <iframe id="pptFrame" title="Stock Protocol presentation" allowfullscreen></iframe>
+    <p class="viewer-note">
+      Slides not loading?
+      <a id="openDirect" href="#" target="_blank" rel="noopener">Open the presentation in a new tab</a>.
+    </p>
+  </dialog>
+
+  <script>
+    const pptUrl = 'https://raw.githubusercontent.com/achu1234nn/Stock-Protocol/main/Idea_Deck_Template.ppt';
+    const viewerUrl = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(pptUrl);
+    const dialog = document.getElementById('viewer');
+    const frame = document.getElementById('pptFrame');
+
+    document.getElementById('openDirect').href = viewerUrl;
+
+    document.getElementById('viewBtn').addEventListener('click', () => {
+      if (!frame.src) frame.src = viewerUrl;
+      dialog.showModal();
+    });
+    document.getElementById('closeBtn').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  </script>
+</body>
+</html>
